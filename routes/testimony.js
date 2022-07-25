@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {verifyRole} = require('../middlewares/auth')
 
 const {
   createTestimony,
@@ -7,6 +8,7 @@ const {
   deleteTestimony,
   listTestimony
 } = require("../controllers/testimony");
+const { verifyOwnership } = require("../middlewares/auth");
 
 /**
  * @swagger
@@ -63,7 +65,7 @@ const {
  *
  */
 
-router.post("/", createTestimony);
+router.post("/", verifyRole, createTestimony);
 
 
 /**
@@ -97,8 +99,8 @@ router.post("/", createTestimony);
  *      500:
  *        description: Error del servidor
  */
-router.put("/:id", updateTestimony);
 
+router.put("/:id", verifyOwnership, updateTestimony);
 
 router.get('/', listTestimony);
 
@@ -126,6 +128,6 @@ router.get('/', listTestimony);
  */
 
 
-router.delete("/:id", deleteTestimony);
+router.delete("/:id", verifyOwnership, deleteTestimony);
 
 module.exports = router;

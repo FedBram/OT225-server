@@ -1,5 +1,7 @@
 const express = require('express');
+const { verifyOwnership } = require('../middlewares/auth.js');
 const router = express.Router();
+const {verifyRole} = require('../middlewares/auth')
 
 const {
   listUsers,
@@ -11,8 +13,10 @@ const {
 //Listar usuarios
 router.get('/', listUsers);
 //Actualizar un usuario
-router.patch('/:id', updateUser);
+
+router.patch('/:id', verifyOwnership, updateUser);
 //Eliminar un usuario
-router.delete('/:id', deleteUser)
+router.delete('/:id', verifyOwnership, deleteUser)
+
 
 module.exports = router;
